@@ -1,0 +1,77 @@
+﻿@model List<FoodPack2Go.Core.Review>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<style>
+ button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+
+<h2>Review Data</h2>
+
+<div style="overflow:auto">
+    <table class="table table-bordered table-responsive table-hover" id="reviewTable">
+        <thead>
+            <tr>
+                <th>Review ID</th>
+                <th>Product ID</th>
+                <th>Customer Name</th>
+                <th>Customer Email</th>
+                <th>Review Title</th>
+                <th>Review Description</th>
+                <th>Rating</th>
+                <th>Review Date</th>
+                <th>Average Rating</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Model)
+            {
+                <tr>
+                    <td>@review.ReviewID</td>
+                    <td>@review.ProductID</td>
+                    <td>@review.CustomerName</td>
+                    <td>@review.CustomerEmail</td>
+                    <td>@review.ReviewTitle</td>
+                    <td>@review.ReviewDescription</td>
+                    <td>@review.Rating</td>
+                    <td>@review.ReviewDate</td>
+                    <td>@review.Product?.AverageRating</td>
+                    <td>
+                        @if (review.Product?.AverageRating.HasValue == true && review.Product.AverageRating.Value <= 2)
+                        {
+                            <form method="post" asp-controller="Review" asp-action="SoftDelete">
+                                <input type="hidden" name="productId" value="@review.ProductID" />
+                                <button type="submit">Soft Delete</button>
+                            </form>
+
+                            <form method="post" asp-controller="Review" asp-action="UndoSoftDelete">
+                                <input type="hidden" name="productId" value="@review.ProductID" />
+                                <button type="submit">Undo</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span> - </span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#reviewTable').DataTable();
+        });
+    </script>
+}

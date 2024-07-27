@@ -1,0 +1,88 @@
+﻿@model IEnumerable<FoodPack2Go.Core.Customer>
+@{
+    ViewData["Title"] = "MANAGE CUSTOMER";
+}
+<h3>@ViewData["Title"]</h3>
+<hr />
+
+
+<form>
+    <button asp-action="Create" asp-controller="Customer" class="btn btn-dark mb-3">ADD</button>
+    <div style="overflow:auto">
+        <table class="table table-bordered table-responsive table-hover" id="vc">
+            <thead>
+                <tr class="table-active">
+
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Address</th>
+                    <th>Pincode</th>
+                    <th>Country</th>
+                    <th>State</th>
+                    <th>City</th>
+                    <th>ContactNo</th>
+                    <th>CreatedBy</th>
+                    <th>ModifiedBy</th>
+                    <th>LastLogin</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>@p.FirstName</td>
+                            <td>@p.LastName</td>
+                            <td>@p.Email</td>
+                            <td>@p.Password</td>
+                            <td>@p.Address</td>
+                            <td>@p.Pincode</td>
+                            <td>@p.Country</td>
+                            <td>@p.State</td>
+                            <td>@p.City</td>
+                            <td>@p.ContactNo</td>
+                            <td>@p.CreatedBy</td>
+                            <td>@p.ModifiedBy</td>
+                            <td>@p.LastLogin</td>
+                        
+                            <td class="center">
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-action="Edit" asp-controller="Customer" asp-route-id="@p.CustomerID"
+                                       class="btn btn-warning">EDIT </a>
+                                    <a asp-action="Delete" asp-controller="Customer" asp-route-id="@p.CustomerID"
+                                       class="btn btn-danger">REMOVE  </a>
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="16">
+                            <div>NO USERS AVAILABLE !!!!!!</div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#vc').DataTable();
+        });
+    </script>
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">

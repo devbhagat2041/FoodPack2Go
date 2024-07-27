@@ -1,0 +1,129 @@
+﻿@model IEnumerable<FoodPack2Go.Core.MasterHomePage>
+@{
+    ViewData["Title"] = "HOME PAGE";
+}
+<h3>@ViewData["Title"]</h3>
+<hr />
+
+@if (TempData["successmessage"] != null)
+{
+    <div class="alert alert-success" id="successMessage">
+        @TempData["successmessage"]
+    </div>
+}
+
+@if (TempData["errormessage"] != null)
+{
+    <div class="alert alert-danger" id="errorMessage">
+        @TempData["errormessage"]
+    </div>
+}
+
+<script>
+    // Timeout to hide success message after 5 seconds
+    setTimeout(function () {
+        $('#successMessage').fadeOut('fast');
+    }, 5000);
+
+    // Timeout to hide error message after 5 seconds
+    setTimeout(function () {
+        $('#errorMessage').fadeOut('fast');
+    }, 5000);
+</script>
+
+<form>
+    <button asp-action="Create" asp-controller="MasterHomePage" class="btn btn-info mb-3">ADD</button>
+    <div style="overflow:auto">
+
+    <table class="table table-bordered table-responsive table-hover" id="vc">
+        <thead>
+            <tr class="table-active">
+               
+                <th>HomeId</th>
+                <th>DescriptionOffer</th>
+                <th>WebsiteTitle</th>
+                <th>FeaturedProductTitle</th>
+                <th>FeaturedProductDescription</th>
+                <th>PromoTitle</th>
+                <th>PromoTagline</th>
+                <th>PromoDescription</th>
+                <th>PromoProductname</th>
+                <th>PromoOffertag</th>
+                <th>CompanyContactNo</th>
+                <th>CompanyEmail</th>
+                <th>CompanyDescription</th>
+                <th>CompanyAddress</th>
+                    <th>PromoImage</th>
+
+                <th>BgImage</th>
+
+                
+                <th>Action</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.HomeId</td>
+                        <td>@p.DescriptionOffer</td>
+                        <td>@p.WebsiteTitle</td>
+                        <td>@p.FeaturedProductTitle</td>
+                        <td>@p.FeaturedProductDescription</td>
+                        <td>@p.PromoTitle</td>
+                        <td>@p.PromoTagline</td>
+                        <td>@p.PromoDescription</td>
+                        <td>@p.PromoProductname</td>
+                        <td>@p.PromoOffertag</td>
+
+
+                        <td>@p.CompanyContactNo</td>
+                        <td>@p.CompanyEmail</td>
+                        <td>@p.CompanyDescription</td>
+                        <td>@p.CompanyAddress</td>
+                            <td><img src="/assets/images/@p.PromoImage" /></td>
+
+                        <td><img src="/assets/images/@p.BgImage" /></td>
+
+                        
+
+                        <td class="center">
+                            <div class="btn-group btn-group-sm">
+
+                                <a asp-action="Edit" asp-controller="MasterHomePage" asp-route-id="@p.HomeId"
+                                   class="btn btn-warning">EDIT </a>
+                                <a asp-action="Delete" asp-controller="MasterHomePage" asp-route-id="@p.HomeId"
+                                   class="btn btn-danger">REMOVE  </a>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            }
+            else
+            {
+                <tr>
+                    <td colspan="17">
+                        <div>NO DATA AVAILABLE !!!!!!</div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#vc').DataTable();
+        });
+    </script>
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">

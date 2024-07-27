@@ -1,0 +1,159 @@
+﻿@model FoodPack2Go.Core.Footer
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            background-color: blue;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .btn-primary:hover {
+                background-color: black;
+            }
+
+        .text-danger {
+            color: red;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+            .signup-link a {
+                color: #007bff;
+                text-decoration: none;
+            }
+    </style>
+
+    <!-- Add this in the head section of your HTML file -->
+<script src="https://cdn.tiny.cloud/1/fkf0uvz6m8qoq5pvtlhlrf4rde5fmdlh9ezzwxd96urzxbps/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        tinymce.init({
+            selector: '#Privacy_Title, #Privacy_Discription , #Terms_Title , #Terms_Discription , #Return_Title , #Return_Discription',  // Use the textarea IDs here
+            min_height: 100,
+            height: 200,
+            plugins: 'advlist autolink lists link image charmap print preview anchor',
+            toolbar: 'bold italic underline | fontselect fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            menubar: false
+        });
+    </script>
+
+
+</head>
+
+<body class="abc" style="margin: 0;
+            padding: 0;
+            margin-bottom:30px;
+            background-color: #ffffff;
+            align-items: center;
+
+            justify-content: center;
+            height: 100vh;">
+
+    <form method="post" asp-action="Create" asp-controller="Footers" style=" background-color: #f4f4f4;
+            padding: 50px;
+            margin-left:33%;
+margin-top:50px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            box-sizing: border-box;">
+        <h2 style=" text-align: center;
+            color: #333;">
+            ADD FOOTER
+        </h2>
+        <div class="main">
+            <div class="inner">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Privacy_Title">Privacy_Title</label>
+                    <textarea id="Privacy_Title" name="Privacy_Title" class="form-control tinymce-textarea"></textarea>
+                    <span asp-validation-for="Privacy_Title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Privacy_Discription"> Privacy_Discription</label>
+                    <textarea id="Privacy_Discription" name="Privacy_Discription" class="form-control tinymce-textarea"></textarea>
+                    <span asp-validation-for="Privacy_Discription" class="text-danger"></span>
+                </div>
+
+        <div class="form-group">
+            <label asp-for="Terms_Title">Terms_Title</label>
+                    <textarea id="Terms_Title" name="Terms_Title" class="form-control tinymce-textarea"></textarea>
+            <span asp-validation-for="Terms_Title" class="text-danger"></span>
+        </div>
+        </div>
+        <div class="inner"> 
+            <div class="form-group">
+            <label asp-for="Terms_Discription"> Terms_Discription</label>
+                    <textarea id="Terms_Discription" name="Terms_Discription" class="form-control tinymce-textarea"></textarea>
+            <span asp-validation-for="Terms_Discription" class="text-danger"></span>
+        </div> 
+        
+        <div class="form-group">
+            <label asp-for="Return_Title">Return_Title</label>
+                    <textarea id="Return_Title" name="Return_Title" class="form-control tinymce-textarea"></textarea>
+            <span asp-validation-for="Return_Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Return_Discription"> Return_Discription </label>
+                    <textarea id="Return_Discription" name="Return_Discription" class="form-control tinymce-textarea"></textarea>
+            <span asp-validation-for="Return_Discription" class="text-danger"></span>
+        </div>
+
+
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input type="submit" style="height:48px" class="form-control btn btn-primary mt-4" value="ADD" />
+
+
+                    <span class="text-danger"></span>
+                </div>
+            </div>
+
+    </form>
+
+</body>
+
+</html>
+

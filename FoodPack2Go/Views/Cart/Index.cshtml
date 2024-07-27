@@ -1,0 +1,41 @@
+﻿@model IEnumerable<FoodPack2Go.Core.Cart>
+
+<h2>CART ITEMS</h2>
+
+<table class="table table-bordered table-responsive table-hover" id="vc">
+    <thead>
+        <tr class="table-active">
+            <th>CartID</th>
+            <th>CustomerID</th>
+            <th>ProductID</th>
+            <th>CreatedBy</th>
+            <th>ModifiedBy</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CartID</td>
+                <td>@item.CustomerID</td>
+                <td>@item.ProductID</td>
+                <td>@item.CreatedBy</td>
+                <td>@item.ModifiedBy</td>
+                <td>@item.Quantity</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#vc').DataTable();
+        });
+    </script>
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">

@@ -1,0 +1,122 @@
+﻿@model IEnumerable<FoodPack2Go.Core.CategoryList>
+@{
+    ViewData["Title"] = "CATEGORY-LIST";
+}
+<h3>@ViewData["Title"]</h3>
+<hr />
+
+@if (TempData["successmessage"] != null)
+{
+    <div class="alert alert-success" id="successMessage">
+        @TempData["successmessage"]
+    </div>
+}
+
+@if (TempData["errormessage"] != null)
+{
+    <div class="alert alert-danger" id="errorMessage">
+        @TempData["errormessage"]
+    </div>
+}
+
+<script>
+    // Timeout to hide success message after 5 seconds
+    setTimeout(function () {
+        $('#successMessage').fadeOut('fast');
+    }, 5000);
+
+    // Timeout to hide error message after 5 seconds
+    setTimeout(function () {
+        $('#errorMessage').fadeOut('fast');
+    }, 5000);
+</script>
+
+<form>
+    <button asp-action="Create" asp-controller="CategoryList" class="btn btn-dark mb-3">ADD</button>
+    <div style="overflow:auto">
+
+    <table class="table table-bordered table-responsive table-hover" id="vc">
+        <thead>
+            <tr class="table-active">
+                <th>CategoryListId</th>
+                <th>CategoryListTitle</th>
+                <th>CategoryListImage</th>
+                <th>CategoryListDescripton</th>
+                <th>CategoryListButtonTitle</th>
+                <th>CategoryListTitle2</th>
+                <th>CategoryListTitle3</th>
+                <th>CategoryListTitle4</th>
+                <th>CategoryListTitle5</th>
+                <th>CategoryListImage2</th>
+                <th>CategoryListImage3</th>
+                <th>CategoryListImage4</th>
+                <th>CategoryListImage5</th>
+
+
+                <th>Action</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td>@p.CategoryListId</td>
+                        <td>@p.CategoryListTitle</td>
+
+                        <td><img src="/assets/images/@p.CategoryListImage" /></td>
+
+                        <td>@p.CategoryListDescripton</td>
+                        <td>@p.CategoryListButtonTitle</td>
+                        <td>@p.CategoryListTitle2</td>
+                        <td>@p.CategoryListTitle3</td>
+                        <td>@p.CategoryListTitle4</td>
+                        <td>@p.CategoryListTitle5</td>
+
+                        <td><img src="/assets/images/@p.CategoryListImage2" /></td>
+                        <td><img src="/assets/images/@p.CategoryListImage3" /></td>
+                        <td><img src="/assets/images/@p.CategoryListImage4" /></td>
+                        <td><img src="/assets/images/@p.CategoryListImage5" /></td>
+
+
+
+                        <td class="center">
+                            <div class="btn-group btn-group-sm">
+                                <a asp-action="Edit" asp-controller="CategoryList" asp-route-id="@p.CategoryListId"
+                                   class="btn btn-warning">EDIT </a>
+                                <a asp-action="Delete" asp-controller="CategoryList" asp-route-id="@p.CategoryListId"
+                        class="btn btn-danger">REMOVE  </a> 
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            }
+            else
+            {
+                <tr>
+                    <td colspan="6">
+                        <div>NO DATA AVAILABLE !!!!!!</div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</form>
+
+
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#vc').DataTable();
+        });
+    </script>
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">

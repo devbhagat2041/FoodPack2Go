@@ -1,0 +1,66 @@
+﻿@model IEnumerable<FoodPack2Go.Core.Coupon>
+
+@{
+    ViewData["Title"] = "Coupons";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+@if (TempData["successmessage"] != null)
+{
+    <div class="alert alert-success" id="successMessage">
+        @TempData["successmessage"]
+    </div>
+}
+
+@if (TempData["errormessage"] != null)
+{
+    <div class="alert alert-danger" id="errorMessage">
+        @TempData["errormessage"]
+    </div>
+}
+
+<script>
+    // Timeout to hide success message after 5 seconds
+    setTimeout(function () {
+        $('#successMessage').fadeOut('fast');
+    }, 5000);
+
+    // Timeout to hide error message after 5 seconds
+    setTimeout(function () {
+        $('#errorMessage').fadeOut('fast');
+    }, 5000);
+</script>
+
+<div>
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Code</th>
+                <th>Discount Amount</th>
+                <th>Expiry Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Code</td>
+                    <td>@item.DiscountAmount</td>
+                    <td>@item.ExpiryDate.ToShortDateString()</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

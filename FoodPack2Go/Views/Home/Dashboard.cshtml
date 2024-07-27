@@ -1,0 +1,399 @@
+﻿ @model FoodPack2Go.Core.AdminModel
+
+@{
+    ViewData["Title"] = "Dashboard Page";
+    Layout = "_Layout";
+
+}
+
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .chart-container {
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+}
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h3 class="page-title">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
+                <i class="mdi mdi-home"></i>
+            </span> Dashboard
+        </h3>
+    </div>
+    <div class="row">
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-danger card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">
+                        TOTAL USERS <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-5">
+                        <strong class="number mb-5">@ViewData["TotalCustomers"]</strong>
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-info card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">
+                        TOTAL PRODUCT <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-5">
+                        <strong class="number mb-5">
+                            @ViewData["TotalProducts"]
+                        </strong>
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-success card-img-holder text-white">
+                <div class="card-body">
+                    <img src="~/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                    <h4 class="font-weight-normal mb-3">
+                        TOTAL ORDERS <i class="mdi mdi-diamond mdi-24px float-right"></i>
+                    </h4>
+                    <h2 class="mb-5">
+                        <strong class="number mb-5">
+                            @ViewData["TotalOrders"]
+                        </strong>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+  
+    <!--Graph Charts-->
+
+
+    <div class="row">
+        @if (ViewData["type"].Equals("Weekly"))
+        {
+            <div class="col-md-7 grid-margin stretch-card mb-5">
+                <div class="card ">
+                    <center>
+                        <div class="chart-navigation mt-3">
+                            <a class="btn badge badge-gradient-warning" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Daily" })">Daily Chart</a>
+                            <a class="btn badge badge-gradient-danger" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Weekly" })">Weekly Chart</a>
+                            <a class="btn badge badge-gradient-info" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Monthly" })">Monthly Chart</a>
+                            <a class="btn badge badge-gradient-success" href="@Url.Action("Dashboard", "Home", new { charttype = "Yearly" })">Yearly Chart</a>
+
+                        </div>
+                    </center>
+                    <div class="card-body">
+                        <div class="clearfix">
+                            <h4 class="card-title float-left">Weekly Order Chart</h4>
+                        </div>
+                        <canvas id="weeklyChart" width="400" height="200"></canvas>
+
+                    </div>
+                </div>
+            </div>
+            <script>
+                var weeklyChartData = @Html.Raw(Json.Serialize(Model.WeeklyChart));
+
+                // Extracting week labels and order counts
+                var labels = weeklyChartData.map(item => 'Week ' + item.week);
+                var orderCounts = weeklyChartData.map(item => item.orderCount);
+
+                var ctx = document.getElementById('weeklyChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Weekly Order Count',
+                            data: orderCounts,
+                            backgroundColor: 'rgba(255, 0, 0, 0.5)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        }
+        else if (ViewData["type"].Equals("Monthly"))
+        {
+            <div class="col-md-7 grid-margin stretch-card">
+                <div class="card">
+                    <center>
+                        <div class="chart-navigation mt-3">
+                            <a class="btn badge badge-gradient-warning" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Daily" })">Daily Chart</a>
+                            <a class="btn badge badge-gradient-danger" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Weekly" })">Weekly Chart</a>
+                            <a class="btn badge badge-gradient-info" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Monthly" })">Monthly Chart</a>
+                            <a class="btn badge badge-gradient-success" href="@Url.Action("Dashboard", "Home", new { charttype = "Yearly" })">Yearly Chart</a>
+
+                        </div>
+                    </center>
+                    <div class="card-body">
+                        <div class="clearfix">
+                            <h4 class="card-title float-left">Monthly Order Chart</h4>
+                        </div>
+                        <canvas id="monthlyChart" width="400" height="200"></canvas>
+
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                var monthlyChartData = @Html.Raw(Json.Serialize(Model.MonthlyChart));
+
+                // Extracting year labels and order counts
+                var labels = monthlyChartData.map(item => getMonthYearLabel(item.month));
+                var orderCounts = monthlyChartData.map(item => item.orderCount);
+
+                function getMonthYearLabel(dateString) {
+                    const options = { month: 'long', year: 'numeric' };
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-US', options);
+                }
+
+                var ctx = document.getElementById('monthlyChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Monthly Order Count',
+                            data: orderCounts,
+                            backgroundColor: 'rgba(30, 144, 255, 0.5)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+
+        }
+        else if (ViewData["type"].Equals("Yearly"))
+        {
+            <div class="col-md-7 grid-margin stretch-card">
+                <div class="card">
+                    <center>
+                        <div class="chart-navigation mt-3">
+                            <a class="btn badge badge-gradient-warning" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Daily" })">Daily Chart</a>
+                            <a class="btn badge badge-gradient-danger" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Weekly" })">Weekly Chart</a>
+                            <a class="btn badge badge-gradient-info" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Monthly" })">Monthly Chart</a>
+                            <a class="btn badge badge-gradient-success" href="@Url.Action("Dashboard", "Home", new { charttype = "Yearly" })">Yearly Chart</a>
+
+                        </div>
+                    </center>
+                    <div class="card-body">
+                        <div class="clearfix">
+                            <h4 class="card-title float-left">Yearly Order Chart</h4>
+                        </div>
+                        <canvas id="yearlyChart" width="400" height="200"></canvas>
+
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                var yearlyChartData = @Html.Raw(Json.Serialize(Model.YearlyChart));
+
+                // Extracting year labels and order counts
+                var labels = yearlyChartData.map(item => item.year.toString());
+                var orderCounts = yearlyChartData.map(item => item.orderCount);
+
+                var ctx = document.getElementById('yearlyChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Yearly Order Count',
+                            data: orderCounts,
+                            backgroundColor: ' rgba(0, 255, 0, 0.5)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        }
+        else
+        {
+            <div class="col-md-7 grid-margin stretch-card">
+                <div class="card">
+                    <center>
+                        <div class="chart-navigation mt-3">
+                            <a class="btn badge badge-gradient-warning" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Daily" })">Daily Chart</a>
+                            <a class="btn badge badge-gradient-danger" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Weekly" })">Weekly Chart</a>
+                            <a class="btn badge badge-gradient-info" style="margin-right: 10px" href="@Url.Action("Dashboard", "Home", new { charttype = "Monthly" })">Monthly Chart</a>
+                            <a class="btn badge badge-gradient-success" href="@Url.Action("Dashboard", "Home", new { charttype = "Yearly" })">Yearly Chart</a>
+
+                        </div>
+                    </center>
+                    <div class="card-body">
+                        <div class="clearfix">
+                            <h4 class="card-title float-left">Daily Order Chart</h4>
+                        </div>
+                        <canvas id="dailyChart" width="400" height="200"></canvas>
+
+                    </div>
+                </div>
+            </div>
+            <script>
+                var dailyChartData = @Html.Raw(Json.Serialize(Model.DailyChart));
+
+                // Extracting date labels and order counts
+                var labels = dailyChartData.map(item => new Date(item.date).toLocaleDateString());
+                var orderCounts = dailyChartData.map(item => item.orderCount);
+
+                var ctx = document.getElementById('dailyChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Daily Order Count',
+                            data: orderCounts,
+                            backgroundColor: 'rgba(255, 255, 0, 0.5)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        }
+
+        <div class="col-md-5 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Order Distribution by Category</h4>
+                    <div class="chart-container">
+                        <canvas id="category-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Deserialize the JSON chart data passed from the controller
+        var categoryData = JSON.parse('@Html.Raw(Model.chart)');
+
+        // Add colors to the categoryData object
+        categoryData.datasets.forEach(function (dataset) {
+            dataset.backgroundColor = ["rgba(0, 255, 0, 0.5)", "rgba(30, 144, 255, 0.5)", "rgba(255, 255, 0, 0.5)", "rgba(255, 0, 0, 0.5)", "rgba(128, 0, 128, 0.5)"];
+            dataset.hoverBackgroundColor = ["rgba(0, 255, 0, 0.5)", "rgba(30, 144, 255, 0.5)", "rgba(255, 255, 0, 0.5)", "rgba(255, 0, 0, 0.5)", "rgba(128, 0, 128, 0.5)"];
+        });
+
+        // Get the context of the canvas element
+        var ctx = document.getElementById("category-chart").getContext("2d");
+
+        // Create a pie chart
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: categoryData,
+            options: {
+                responsive: true,
+                legend: {
+                    display: false
+                }
+            }
+        });
+    </script>
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Payment Invoice</h4>
+                    <div class="table-responsive">
+                        <table id="paymentTable" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Payment ID</th>
+                                    <th>Amount</th>
+                                    <th>Currency</th>
+                                    <th>Status</th>
+                                    <th>Payment Method</th>
+                                    <th>Customer ID</th>
+                                    <th>Created At</th>
+                                    <!-- Add more columns as needed -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var payment in ViewBag.Payments)
+                                {
+                                    <tr>
+                                        <td>@payment.PaymentId</td>
+                                        <td>@payment.Amount</td>
+                                        <td>@payment.Currency</td>
+                                        <td><label class="badge badge-gradient-success">@payment.Status</label></td>
+                                        <td>@payment.PaymentMethod</td>
+                                        <td>@payment.CustomerID</td>
+                                        <td>@payment.CreatedAt</td>
+                                        <!-- Add more columns as needed -->
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#paymentTable').DataTable();
+            });
+        </script>
+    }
+
+
+    </body>
+</html>

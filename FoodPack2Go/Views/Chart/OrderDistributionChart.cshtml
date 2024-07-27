@@ -1,0 +1,38 @@
+﻿@model dynamic
+
+
+
+<!-- Include Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="col-md-5 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Order Distribution by Category</h4>
+            <canvas id="category-chart"></canvas>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Use the dynamic model data passed from the controller
+    var categoryData = @Html.Raw(Json.Serialize(Model));
+
+    // Get the context of the canvas element
+    var ctx = document.getElementById("category-chart").getContext("2d");
+
+    // Create a pie chart
+    var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: categoryData,
+        options: {
+            responsive: true,
+            legend: {
+                display: false
+            }
+        }
+    });
+</script>
+
+

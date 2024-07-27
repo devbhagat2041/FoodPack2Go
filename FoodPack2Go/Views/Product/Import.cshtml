@@ -1,0 +1,168 @@
+﻿@model FoodPack2Go.Core.ProductModel
+@{
+    ViewData["Title"] = "Import Products File";
+}
+
+<h3>@ViewData["Title"]</h3>
+<hr />
+
+@if (TempData["errormessage"] is not null)
+{
+    <div class="alert alert-danger">
+        @TempData["errormessage"]
+    </div>
+}
+
+@if (TempData["successmessage"] is not null)
+{
+    <div class="alert alert-success">
+        @TempData["successmessage"]
+    </div>
+}
+
+<form method="post" enctype="multipart/form-data" id="importForm">
+    <div class="form-group">
+        <label for="file">Select Excel File:</label>
+        <input type="file" id="file" name="file" class="form-control" accept=".xlsx" />
+    </div>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmImportModal">
+        Import
+    </button>
+    <a asp-action="Index" asp-controller="Product" class="btn btn-secondary">Back</a>
+</form>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmImportModal" tabindex="-1" role="dialog" aria-labelledby="confirmImportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmImportModalLabel">Confirm Import</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                <p>Data to be imported:</p>
+                <table class="table table-bordered" id="previewDataTable">
+                    <thead>
+                        <!-- Table header will be dynamically added here -->
+                    </thead>
+                    <tbody id="previewDataBody">
+                        <!-- Data rows will be added here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmImportBtn">Confirm Import</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Function to confirm the import and submit the form
+            $('#confirmImportBtn').click(function () {
+                // Update the ImageURL property of each ProductModel object with the selected image URLs
+                $('#previewDataBody tr').each(function () {
+                    var imageURL = $(this).find('td:eq(-2) input').data('image-url');
+                    $(this).find('td:eq(-2) input').val(imageURL); // Update the hidden input field with the image URL
+                });
+
+                // Create a FormData object to store form data including images
+                var formData = new FormData($('#importForm')[0]);
+
+                // Attach the selected images to the FormData object
+                $('#previewDataBody input[type=file]').each(function (index, input) {
+                    var imageFile = input.files[0];
+                    formData.append('Image_' + index, imageFile);
+                });
+
+                // Submit the form with the FormData object
+                $.ajax({
+                    url: $('#importForm').attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    processData: false, // Prevent jQuery from processing the data
+                    contentType: false, // Prevent jQuery from setting contentType
+                    success: function (response) {
+                        // Handle success response
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            // File input change event handler
+            $('#file').change(function () {
+                // Read the selected file and populate the preview table
+                var input = this;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var data = new Uint8Array(e.target.result);
+                    var workbook = XLSX.read(data, { type: 'array' });
+                    var sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    var rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+                    // Populate the preview table with data
+                    var previewDataTable = $('#previewDataTable');
+                    var previewBody = $('#previewDataBody');
+                    var headerRow = $('<tr></tr>');
+
+                    // Generate table header dynamically
+                    for (var i = 0; i < rows[0].length; i++) {
+                        headerRow.append('<th>' + rows[0][i] + '</th>');
+                    }
+                    headerRow.append('<th>Image</th>'); // Add Image column header
+                    previewDataTable.find('thead').empty().append(headerRow);
+
+                    // Populate the table body with data
+                    previewBody.empty();
+                    for (var j = 1; j < rows.length; j++) {
+                        var row = $('<tr></tr>');
+                        for (var k = 0; k < rows[j].length; k++) {
+                            row.append('<td>' + rows[j][k] + '</td>');
+                        }
+
+                        // Add file input field for image selection
+                        var fileInput = $('<input type="file" name="Image" class="form-control-file" accept="image/*" onchange="previewImage(this, ' + j + ')">');
+                        row.append($('<td></td>').append(fileInput));
+
+                        previewBody.append(row);
+                    }
+                };
+                reader.readAsArrayBuffer(input.files[0]);
+            });
+        });
+
+        // Function to preview the selected image and update the corresponding ProductModel object
+        function previewImage(input, rowNumber) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    // Display the selected image preview in the corresponding cell
+                    $('#previewDataBody tr:eq(' + rowNumber + ') td:last').empty().append($('<img>').attr('src', e.target.result).css('max-width', '100px'));
+
+                    // Update the ImageURL property of the corresponding ProductModel object
+                    var imageURL = e.target.result; // This is the base64 encoded data URL of the selected image
+                    $('#previewDataBody tr:eq(' + rowNumber + ') td:eq(-2)').find('input').data('image-url', imageURL);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    <!-- Include the XLSX library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.8/xlsx.full.min.js"></script>
+
+    <!-- Bootstrap CSS -->
+    @* <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="...">  *@
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="..." crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="..." crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="..." crossorigin="anonymous"></script>
+}

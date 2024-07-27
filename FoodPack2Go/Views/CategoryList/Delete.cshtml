@@ -1,0 +1,190 @@
+﻿@model FoodPack2Go.Core.CategoryList
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+
+        input {
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            background-color: RED;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .btn-primary:hover {
+                background-color:lightcoral;
+            }
+
+        .text-danger {
+            color: red;
+        }
+
+        .main {
+            display: flex;
+        }
+
+        .inner {
+            width: 600px;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <hr />
+    <form method="post" asp-action="Delete" asp-controller="CategoryList" style="margin-left:10%; background-color: #f4f4f4;
+            border-radius: 8px;
+            padding:50px;
+margin-top:30px;
+margin-bottom:30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 800px;
+            box-sizing:600px;
+        }">
+
+        <h2 style="  text-align: center;
+            color: #333;">
+            REMOVE CATEGORY
+        </h2>
+
+        <div class="main">
+            <div class="inner">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListId" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input asp-for="CategoryListId" class="form-control" />
+                    <span asp-validation-for="CategoryListId" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListTitle" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input asp-for="CategoryListTitle" class="form-control" />
+                    <span asp-validation-for="CategoryListTitle" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListImage" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input type="file" asp-for="CategoryListImage" class="form-control" />
+                    <span asp-validation-for="CategoryListImage" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListDescripton" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input asp-for="CategoryListDescripton" class="form-control" />
+                    <span asp-validation-for="CategoryListDescripton" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListButtonTitle" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input asp-for="CategoryListButtonTitle" type="text" class="form-control" />
+                    <span asp-validation-for="CategoryListButtonTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListTitle2" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input asp-for="CategoryListTitle2" type="text" class="form-control" />
+                    <span asp-validation-for="CategoryListTitle2" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListTitle3" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input asp-for="CategoryListTitle3" type="text" class="form-control" />
+                    <span asp-validation-for="CategoryListTitle3" class="text-danger"></span>
+                </div>
+            </div>
+              
+
+            <div class="inner">
+
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label asp-for="CategoryListTitle4" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                        <input asp-for="CategoryListTitle4" type="text" class="form-control" />
+                        <span asp-validation-for="CategoryListTitle4" class="text-danger"></span>
+                    </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListTitle5" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input asp-for="CategoryListTitle5" type="text" class="form-control" />
+                    <span asp-validation-for="CategoryListTitle5" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListImage2" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input type="file" asp-for="CategoryListImage2" class="form-control" />
+                    <span asp-validation-for="CategoryListImage2" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListImage3" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input type="file" asp-for="CategoryListImage3" class="form-control" />
+                    <span asp-validation-for="CategoryListImage3" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListImage4" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input type="file" asp-for="CategoryListImage4" class="form-control" />
+                    <span asp-validation-for="CategoryListImage4" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label asp-for="CategoryListImage5" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input type="file" asp-for="CategoryListImage5" class="form-control" />
+                    <span asp-validation-for="CategoryListImage5" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+                    <input type="submit" style="height:48px" class="form-control btn btn-primary mt-4" value="REMOVE" />
+
+
+                    <span class="text-danger"></span>
+                </div>
+            </div>
+
+            </div>
+
+
+
+
+    </form>
+
+</body>
+</html>
+
+

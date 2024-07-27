@@ -1,0 +1,128 @@
+﻿@model FoodPack2Go.Core.Banner
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            background-color: gold;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .btn-primary:hover {
+                background-color: black;
+            }
+
+        .text-danger {
+            color: red;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+            .signup-link a {
+                color: #007bff;
+                text-decoration: none;
+            }
+    </style>
+</head>
+
+<body class="abc" style="margin: 0;
+            padding: 0;
+            margin-bottom:30px;
+            background-color: #ffffff;
+            align-items: center;
+
+            justify-content: center;
+            height: 100vh;">
+
+    <form method="post" asp-action="Edit" asp-controller="Banner" style=" background-color: #f4f4f4;
+            padding: 50px;
+            margin-left:33%;
+margin-top:50px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            box-sizing: border-box;">
+        <h2 style=" text-align: center;
+            color: #333;">
+            EDIT BANNER
+        </h2>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group" style="margin-bottom: 16px;">
+            <label asp-for="BannerId" style="display: block;
+            margin-bottom: 8px;
+            color: #333;"></label>
+            <input asp-for="BannerId" class="form-control" />
+            <span asp-validation-for="BannerId" class="text-danger"></span>
+        </div>
+
+       @*  <div class="form-group">
+            <label asp-for="BannerImage">BannerImage</label>
+            <input type="file" asp-for="BannerImage" class="form-control" />
+            <span asp-validation-for="BannerImage" class="text-danger"></span>
+        </div> *@
+        <div class="form-group" style="margin-bottom: 16px;">
+            <label asp-for="BannerImage" style="display: block; margin-bottom: 8px; color: #333;"></label>
+            <!-- Display the current image -->
+            <img src="/assets/images/@Model.BannerImage" style="height:100px;width:100px" />
+
+            <!-- Add a hidden field to store the current image URL -->
+            <input type="hidden" asp-for="BannerId" value="@Model.BannerId" />
+
+            <!-- Provide an option to upload a new image -->
+            <input asp-for="BannerImage" type="file" class="form-control" />
+            <span asp-validation-for="BannerImage" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <label asp-for="BannerTitle"> BannerTitle</label>
+            <input asp-for="BannerTitle" class="form-control" />
+            <span asp-validation-for="BannerTitle" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="BannerDescription"> BannerDescription</label>
+            <input asp-for="BannerDescription" class="form-control" />
+            <span asp-validation-for="BannerDescription" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">EDIT</button>
+    </form>
+
+</body>
+
+</html>
+
+

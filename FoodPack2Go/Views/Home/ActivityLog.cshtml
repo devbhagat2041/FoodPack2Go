@@ -1,0 +1,14 @@
+﻿@model DateTime?
+
+<div>
+    <h4>Last Login Activity</h4>
+    @if (Model.HasValue)
+    {
+        <p>Your last login was on @Model.Value.ToString("MMMM dd, yyyy HH:mm:ss")</p>
+    }
+    else
+    {
+        <p>No previous login activity found.</p>
+    }
+</div>
+

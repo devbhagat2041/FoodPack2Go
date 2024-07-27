@@ -1,0 +1,140 @@
+﻿@model IEnumerable<FoodPack2Go.Core.Orders>
+@{
+    ViewData["Title"] = "ORDERS";
+    var orderid = ViewData["orderid"] as int?;
+}
+<h3>@ViewData["Title"]</h3>
+<hr />
+
+@if (TempData["successmessage"] != null)
+{
+    <div class="alert alert-success" id="successMessage">
+        @TempData["successmessage"]
+    </div>
+}
+
+@if (TempData["errormessage"] != null)
+{
+    <div class="alert alert-danger" id="errorMessage">
+        @TempData["errormessage"]
+    </div>
+}
+
+<script>
+    // Timeout to hide success message after 5 seconds
+    setTimeout(function () {
+        $('#successMessage').fadeOut('fast');
+    }, 5000);
+
+    // Timeout to hide error message after 5 seconds
+    setTimeout(function () {
+        $('#errorMessage').fadeOut('fast');
+    }, 5000);
+</script>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+<form>
+    <button asp-action="Create" asp-controller="Order" class="btn btn-info mb-3">ADD</button>
+
+    <div style="overflow:auto">
+
+        <table class="table table-bordered table-responsive table-hover" id="vc">
+            <thead>
+                <tr class="table-active">
+
+                    <th>OrderID</th>
+                    <th>CustomerID</th>
+                    <th>TotalAmount</th>
+                    <th>Discount</th>
+                    <th>SubTotal</th>
+                    <th>OrderStatus</th>
+                    <th>OrderDate</th>
+                    <th>Barcode</th>
+                    <th>Action</th>
+                    <th>Pdf</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var p in Model)
+                    {
+                        <tr>
+                            <td>@p.OrderID</td>
+                            <td>@p.CustomerID</td>
+                            <td>@p.TotalAmount</td>
+                            <td>@p.Discount</td>
+                            <td>@p.SubTotal</td>
+                            <td>@p.OrderStatus</td>
+                            <td>@p.OrderDate</td>
+
+                            @if (ViewData["BarCode"] != null && p.OrderID == orderid)
+                            {
+                                <td>
+                                    <img style="border-radius:0px;width:200px;height:100px" src="@ViewData["BarCode"]"  />
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="center">
+                                    <div class="btn-group btn-group-sm">
+
+                                        <a asp-action="CreateBarcode" asp-controller="Barcode" asp-route-id="@p.OrderID"
+                                           class="btn btn-dark">Get Barcode </a>
+
+
+                                    </div>
+                                </td>
+
+                            }
+
+                            <td class="center">
+                                <div class="btn-group btn-group-sm">
+
+                                    <a asp-action="Edit" asp-controller="Order" asp-route-id="@p.OrderID"
+                                       class="btn btn-warning">Change Status </a>
+                                    @*    <a asp-action="Delete" asp-controller="Contact" asp-route-id="@p.ContactId"
+                            class="btn btn-danger">REMOVE  </a> *@
+
+                                </div>
+                            </td>
+
+                            <td class="center">
+                                <div class="btn-group btn-group-sm">
+
+                                    <a asp-action="GeneratePdf" asp-controller="Order" asp-route-id="@p.OrderID"
+                                       class="btn btn-danger">Generate PDF</a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                    }
+
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="15">
+                            <div>NO DATA AVAILABLE !!!!!!</div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#vc').DataTable();
+        });
+    </script>
+}
+
+@* <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+ *@
